@@ -4,8 +4,11 @@
 <suite name="First Test">
         <test name="Any Name">
             <parameter name="browser" value="Chrome"/>
+            <parameter name="width" value="1500"/>
+            <parameter name="height" value="1000"/>
+            <parameter name="pageAddress" value="https://www.phptravels.net/"/>
         <classes>
-            <class name="tests.TestSelenium"></class>
+            <class name="tests.Main"></class>
         </classes>
         </test>
         </suite>
