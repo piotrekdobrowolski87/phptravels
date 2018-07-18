@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="First Test">
+        <test name="Any Name">
+            <parameter name="browser" value="Chrome"/>
+        <classes>
+            <class name="tests.TestSelenium"></class>
+        </classes>
+        </test>
+        </suite>

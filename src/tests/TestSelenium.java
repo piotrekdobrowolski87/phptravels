@@ -1,5 +1,6 @@
 package tests;
 
+import common.BrowserSelection;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
@@ -11,18 +12,23 @@ public class TestSelenium {
     WebDriver driver;
     Data data = new Data();
 
-    @BeforeClass
-    public void dupa(){
-        this.driver = new ChromeDriver();
+    @BeforeSuite
+    @Parameters("browser")
+    public void dupa(String browser){
+        //this.driver = new ChromeDriver();
+
+        BrowserSelection browserSelection = new BrowserSelection();
+        this.driver = browserSelection.setBrowser(browser);
+
         driver.manage()
                 .window()
                 .setSize(data.getDimension());
         driver.get(data.getPageAddress());
     }
 
-    @AfterMethod
+    @AfterTest
     public void returnToMainPage(){
-        System.out.println("Dupa");
+        System.out.println("AfterTest");
     }
 
     @Test
@@ -35,7 +41,7 @@ public class TestSelenium {
         Assert.assertEquals(driver.getCurrentUrl(), data.getPageAddress(), "Wrong page address");
     }
 
-    @AfterClass
+    @AfterSuite
     public void end(){
         driver.quit();
     }
