@@ -13,7 +13,7 @@ public class Main {
 
     @BeforeTest (alwaysRun = true)
     @Parameters({"browser","width","height","pageAddress"})
-    public void dupa(String browser, int width, int height, String pageAddress){
+    public void setUpBrowser(String browser, int width, int height, String pageAddress){
         SetBrowser setBrowser = new SetBrowser();
         this.driver = setBrowser.setBrowser(browser, width, height, pageAddress);
         this.pageAddress = pageAddress;
