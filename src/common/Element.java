@@ -7,7 +7,7 @@ public class Element {
     private WebElement webElement;
     private String name;
 
-    Element(String name, WebElement webElement){
+    public Element(String name, WebElement webElement){
         this.webElement = webElement;
         this.name = name;
         System.out.println(this.name + " created");

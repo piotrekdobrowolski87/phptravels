@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="First Test">
-        <test name="Any Name">
-            <parameter name="browser" value="Chrome"/>
+<suite name="First Test Suite">
+        <test name="Navigation">
+            <parameter name="browser" value="Edge"/>
             <parameter name="width" value="1500"/>
             <parameter name="height" value="1000"/>
             <parameter name="pageAddress" value="https://www.phptravels.net/"/>
         <classes>
-            <class name="tests.Main"></class>
+            <class name="tests.usageTests.Navigation"></class>
         </classes>
         </test>
         </suite>

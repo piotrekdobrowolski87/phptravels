@@ -1,9 +1,9 @@
-package pages;
+package pages.allPages;
 
 import org.openqa.selenium.WebDriver;
 
 public class HomePage {
-    String homePageTitle = "PHPTRAVELS | Travel Technology Partner";
+    String title = "PHPTRAVELS | Travel Technology Partner";
     String pageUrl = "https://www.phptravels.net/";
     WebDriver driver;
     //CommonPageElements commonPageElements = new CommonPageElements();
@@ -15,5 +15,9 @@ public class HomePage {
     //public void checkAddresAndTitle(){
     //    commonPageElements.checkAddressAndTitle(pageUrl, homePageTitle, driver);
     //}
+
+    public String getExpectedPageUrl(){
+        return pageUrl;
+    }
 
 }
