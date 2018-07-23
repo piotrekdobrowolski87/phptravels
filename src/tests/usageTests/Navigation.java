@@ -2,20 +2,19 @@ package tests.usageTests;
 
 import common.SetBrowser;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.CommonPageElements;
-import pages.Page;
-import pages.allPages.BlogPage;
+import pages.usageTests.NavigationSection;
 
 public class Navigation {
 
     private WebDriver driver;
     private String pageAddress;
     private CommonPageElements commonPageElements;
-    private String actualUrl;
-    private String expectedUrl;
-    private String actualTitle;
-    private String expectedTitle;
+    private NavigationSection navigationSection;
+    private int invocationCount = 0;
 
 
     @BeforeTest(alwaysRun = true)
@@ -24,24 +23,27 @@ public class Navigation {
         SetBrowser setBrowser = new SetBrowser();
         this.driver = setBrowser.setBrowser(browser, width, height, pageAddress);
         this.pageAddress = pageAddress;
-        commonPageElements = new CommonPageElements(driver, pageAddress);
+        this.commonPageElements = new CommonPageElements(driver);
+        this.navigationSection = new NavigationSection(driver);
     }
 
     @Test
-    public void aaaa() {
-        System.out.println("testtttttttttttttttttt");
+    public void checkAmountOfNavigationElements() {
+        Assert.assertTrue(navigationSection.checkAmountOfNavigationElements(), "Top navigation menu has more/less elements than expected");
+        System.out.println("Top navigation menu has expected number of elements");
+    }
+
+    @Test(invocationCount = 7)
+    public void checkNavigation(){
+        WebElement menuElement = commonPageElements.getTopNavigationMenu()
+                .get(invocationCount);
+
+        this.invocationCount++;
     }
 
     @AfterTest
     public void backToMainPage(){
-        commonPageElements.backToMainPage();
-    }
-
-    @Test
-    public void blogTest(){
-        Page blogPage = new BlogPage();
-        System.out.println(blogPage.getPageTitle()+ " " + blogPage.getPageUrl() );
-
+        //commonPageElements.backToMainPage();
     }
 
     @AfterSuite
