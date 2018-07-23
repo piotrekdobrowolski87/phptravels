@@ -1,14 +1,14 @@
 package pages.allPages;
 
-import org.openqa.selenium.WebDriver;
+import pages.Page;
 
-public class HotelsPage {
+public class HotelsPage extends Page {
     String title = "Search Results";
     String pageUrl = "https://www.phptravels.net/hotels/";
-    WebDriver driver;
-    //CommonPageElements commonPageElements = new CommonPageElements();
 
-    public String getExpectedPageUrl(){
-        return pageUrl;
+    public HotelsPage(){
+        super();
+        setTitle(this.title);
+        setPageUrl(this.pageUrl);
     }
 }

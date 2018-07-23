@@ -4,12 +4,19 @@ import common.SetBrowser;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
 import pages.CommonPageElements;
+import pages.Page;
+import pages.allPages.BlogPage;
 
 public class Navigation {
 
     private WebDriver driver;
     private String pageAddress;
-    CommonPageElements commonPageElements;
+    private CommonPageElements commonPageElements;
+    private String actualUrl;
+    private String expectedUrl;
+    private String actualTitle;
+    private String expectedTitle;
+
 
     @BeforeTest(alwaysRun = true)
     @Parameters({"browser","width","height","pageAddress"})
@@ -28,6 +35,13 @@ public class Navigation {
     @AfterTest
     public void backToMainPage(){
         commonPageElements.backToMainPage();
+    }
+
+    @Test
+    public void blogTest(){
+        Page blogPage = new BlogPage();
+        System.out.println(blogPage.getPageTitle()+ " " + blogPage.getPageUrl() );
+
     }
 
     @AfterSuite

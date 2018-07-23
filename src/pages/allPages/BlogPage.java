@@ -1,15 +1,14 @@
 package pages.allPages;
 
-import org.openqa.selenium.WebDriver;
-import pages.Pages;
+import pages.Page;
 
-public class BlogPage extends Pages {
-    String title = "Blog";
-    String pageUrl = "https://www.phptravels.net/blog/";
-    WebDriver driver;
-    //CommonPageElements commonPageElements = new CommonPageElements();
+public class BlogPage extends Page {
+    private String title = "Blog";
+    private String pageUrl = "https://www.phptravels.net/blog/";
 
-    public String getExpectedPageUrl(){
-        return pageUrl;
+    public BlogPage(){
+        super();
+        setTitle(this.title);
+        setPageUrl(this.pageUrl);
     }
 }
