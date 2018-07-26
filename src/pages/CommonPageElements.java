@@ -19,7 +19,6 @@ public class CommonPageElements {
 
     //top navigation menu
     @FindBy(how = How.XPATH, using = "//*[@class='collapse navbar-collapse']/ul[@class='nav navbar-nav']/li")
-    @CacheLookup
     private List<WebElement> topNavigationMenu;
 
     //my account

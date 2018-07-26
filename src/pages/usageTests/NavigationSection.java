@@ -30,36 +30,37 @@ public class NavigationSection {
         return result;
     }
 
-    private Page getPage (String hyperlinkName) {
+    public Page getPage (String hyperlinkName) {
        Page page;
 
             switch (hyperlinkName) {
-                case "Home":
-                    page = new HomePage();
+                case "home":
+                    page = new HomePage(driver);
                     break;
-                case "Hotels":
-                    page = new HotelsPage();
+                case "hotels":
+                    page = new HotelsPage(driver);
                     break;
-                case "Flights":
-                    page = new FlightsPage();
+                case "flights":
+                    page = new FlightsPage(driver);
                     break;
-                case "Tours":
-                    page = new ToursPage();
+                case "tours":
+                    page = new ToursPage(driver);
                     break;
-                case "Cars":
-                    page = new CarsPage();
+                case "cars":
+                    page = new CarsPage(driver);
                     break;
-                case "Visa":
-                    page = new VisaPage();
+                case "visa":
+                    page = new VisaPage(driver);
                     break;
-                case "Offers":
-                    page = new OffesrsPage();
+                case "offers":
+                    page = new OffesrsPage(driver);
                     break;
-                case "Blog":
-                    page = new BlogPage();
+                case "blog":
+                    page = new BlogPage(driver);
                     break;
+
                 default:
-                    page = new HotelsPage();
+                    page = new HotelsPage(driver);
                     Assert.assertTrue(false,"Wrong hyperlink name: " + hyperlinkName);
             }
         return page;
