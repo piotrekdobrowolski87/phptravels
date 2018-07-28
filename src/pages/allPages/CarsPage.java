@@ -6,7 +6,7 @@ import pages.Page;
 public class CarsPage extends Page {
     private String title = "Cars Listings";
     private String pageUrl = "https://www.phptravels.net/cars";
-    private String hyperlinkName = "Cars";
+    private String hyperlinkName = "cars";
 
     public CarsPage(WebDriver driver){
         super(driver);

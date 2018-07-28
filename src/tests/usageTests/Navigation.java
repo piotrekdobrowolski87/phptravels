@@ -43,7 +43,7 @@ public class Navigation {
     public void checkNavigation(){
         List<WebElement> topNavigationMenu = commonPageElements.getTopNavigationMenu();
 
-        if(invocationCount == topNavigationMenu.size()) {
+        if(invocationCount == navigationSection.getAmountOfNavigationElements()) {
             invocationCount = 0;
         }
 
@@ -54,32 +54,20 @@ public class Navigation {
 
             menuElement.click();
 
+            invocationCount++;
+
             NavigationSection navigationSection = new NavigationSection(driver);
             Page page = navigationSection.getPage(menuElementName);
 
-
-            String expectedUrl = page.getPageUrl();
-            String actualUrl = driver.getCurrentUrl();
-
-            System.out.println("1. " + expectedUrl + "  |   2. " + actualUrl);
-
-            String expectedTitle = page.getPageTitle();
-            String actualTitle = driver.getTitle();
-
-            System.out.println("1. " + expectedTitle + "  |   2. " + actualTitle);
-
-            Assert.assertEquals(actualUrl, expectedUrl, "Wrong page URL");
-            System.out.println("Page Url - ok");
-
-            Assert.assertEquals(actualTitle, expectedTitle, "Wrong page title");
-            System.out.println("Page title - ok");
-
-            invocationCount++;
+            navigationSection.checkAddressAndTitle(page);
     }
 
     @AfterTest
     public void backToMainPage(){
-        //commonPageElements.backToMainPage();
+
+        if(invocationCount != 0) {
+            commonPageElements.backToMainPage();
+        }
     }
 
     @AfterSuite

@@ -6,7 +6,7 @@ import pages.Page;
 public class VisaPage extends Page {
     private String title = "Visa";
     private String pageUrl = "https://www.phptravels.net/ivisa";
-    private String hyperlinkName = "Visa";
+    private String hyperlinkName = "visa";
 
     public VisaPage(WebDriver driver){
         super(driver);

@@ -7,13 +7,14 @@ import pages.CommonPageElements;
 import pages.Page;
 import pages.allPages.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NavigationSection {
-    WebDriver driver;
-    CommonPageElements commonPageElements;
-    int amountOfNavigationElements = 8;
-    List<WebElement> topNavigationMenu;
+    private WebDriver driver;
+    private CommonPageElements commonPageElements;
+    private int amountOfNavigationElements = 8;
+    private List<WebElement> topNavigationMenu;
 
     public NavigationSection(WebDriver driver) {
         this.driver = driver;
@@ -30,48 +31,51 @@ public class NavigationSection {
         return result;
     }
 
-    public Page getPage (String hyperlinkName) {
-       Page page;
+    public Page getPage(String hyperlinkName){
+        List<Page> allPages = allPages();
+        String pageHyperlinkName;
 
-            switch (hyperlinkName) {
-                case "home":
-                    page = new HomePage(driver);
-                    break;
-                case "hotels":
-                    page = new HotelsPage(driver);
-                    break;
-                case "flights":
-                    page = new FlightsPage(driver);
-                    break;
-                case "tours":
-                    page = new ToursPage(driver);
-                    break;
-                case "cars":
-                    page = new CarsPage(driver);
-                    break;
-                case "visa":
-                    page = new VisaPage(driver);
-                    break;
-                case "offers":
-                    page = new OffesrsPage(driver);
-                    break;
-                case "blog":
-                    page = new BlogPage(driver);
-                    break;
+        for (Page page : allPages) {
+            pageHyperlinkName = page.getHyperlinkName();
 
-                default:
-                    page = new HotelsPage(driver);
-                    Assert.assertTrue(false,"Wrong hyperlink name: " + hyperlinkName);
+            if(hyperlinkName.equals(pageHyperlinkName)){
+                return page;
             }
-        return page;
+        }
+
+        Assert.assertTrue(false,"Wrong hyperlink name: " + hyperlinkName);
+        return new HomePage(driver);
     }
 
-    private void checkAddressAndTitle(Page page){
+    private List<Page> allPages(){
+        List<Page> allPages = new ArrayList<>(getActualAmountOfNavigationElements());
+
+        allPages.add(new HomePage(driver));
+        allPages.add(new HotelsPage(driver));
+        allPages.add(new FlightsPage(driver));
+        allPages.add(new ToursPage(driver));
+        allPages.add(new CarsPage(driver));
+        allPages.add(new VisaPage(driver));
+        allPages.add(new OffesrsPage(driver));
+        allPages.add(new BlogPage(driver));
+
+        return allPages;
+    }
+
+    public void checkAddressAndTitle(Page page){
         String actualPageAddress = driver.getCurrentUrl();
         Assert.assertEquals(actualPageAddress, page.getPageUrl(), "Page address is different than expected");
+        System.out.println(page.getPageTitle() + " page url ok");
 
         String actualTitle = driver.getTitle();
         Assert.assertEquals(actualTitle , page.getPageTitle(), "Page title is different than expected");
+        System.out.println(page.getPageTitle() + " page title ok");
+
+        System.out.println();
+    }
+
+    public int getAmountOfNavigationElements(){
+        return amountOfNavigationElements;
     }
 
     private int getActualAmountOfNavigationElements() {

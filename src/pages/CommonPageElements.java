@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.testng.Assert;
+import pages.allPages.HomePage;
 
 import java.util.List;
 
@@ -43,11 +44,11 @@ public class CommonPageElements {
         PageFactory.initElements(driver, this);
     }
 
-    public void backToMainPage(String homePageUrl){
-        element = new Element("Navigation bar image", navigationBarImage);
-        element.cickElement();
-        String actualPageAddress = driver.getCurrentUrl();
-        Assert.assertEquals(actualPageAddress, homePageUrl, "Wrong main page address");
+    public void backToMainPage(){
+        navigationBarImage.click();
+        Page homePage = new HomePage(driver);
+
+        Assert.assertEquals(driver.getCurrentUrl(),homePage.getPageUrl(),"It is not main page URL");
 
         System.out.println("You back to main page");
     }
