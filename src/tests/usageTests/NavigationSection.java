@@ -2,26 +2,22 @@ package tests.usageTests;
 
 import common.CommonMethods;
 import common.SetBrowser;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.CommonPageElements;
 import pages.Page;
-import pages.usageTests.NavigationSection;
+import pages.usageTests.NavigationSectionPage;
 
 import java.util.List;
 
-public class Navigation {
+public class NavigationSection {
 
     private WebDriver driver;
     private CommonPageElements commonPageElements;
-    private NavigationSection navigationSection;
+    private NavigationSectionPage navigationSection;
     private CommonMethods commonMethods;
-    private WebElement preloader;
     private List<WebElement> topNavigationMenu;
     private WebElement menuElement;
     private int invocationCount = 1;
@@ -35,7 +31,7 @@ public class Navigation {
         SetBrowser setBrowser = new SetBrowser();
         this.driver = setBrowser.setBrowser(browser, width, height, pageAddress);
         this.commonPageElements = new CommonPageElements(driver);
-        this.navigationSection = new NavigationSection(driver);
+        this.navigationSection = new NavigationSectionPage(driver);
         this.commonMethods = new CommonMethods(driver);
     }
 
@@ -44,9 +40,7 @@ public class Navigation {
         Assert.assertTrue(navigationSection.checkAmountOfNavigationElements(), "Top navigation menu has more/less elements than expected");
         System.out.println("Top navigation menu has expected number of elements");
 
-        preloader = commonPageElements.getPreloader();
-
-        navigationSection.waitForPreloader(preloader);
+        commonPageElements.waitForPreloader();
 
         previousTitle = driver.getTitle();
         previousURL = driver.getCurrentUrl();
@@ -57,14 +51,14 @@ public class Navigation {
     @Test(invocationCount = 8)
     public void checkNavigation() {
 
-        navigationSection.waitForMenuElements();
+        commonPageElements.waitForMenuElements();
         menuElement = topNavigationMenu.get(invocationCount);
 
         String hyperlinkName = commonMethods.getTextFromWebElement(menuElement);
         menuElement.click();
 
         navigationSection.waitForNextPage(previousTitle,previousURL);
-        navigationSection.waitForPreloader(preloader);
+        commonPageElements.waitForPreloader();
 
         Page page = navigationSection.getPage(hyperlinkName);
 
@@ -77,7 +71,7 @@ public class Navigation {
 
     }
 
-    @AfterSuite
+    @AfterSuite (alwaysRun = true)
     public void end() {
         driver.quit();
     }

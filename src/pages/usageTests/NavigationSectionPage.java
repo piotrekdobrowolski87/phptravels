@@ -12,7 +12,7 @@ import pages.allPages.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NavigationSection {
+public class NavigationSectionPage {
     private WebDriver driver;
     private CommonPageElements commonPageElements;
     private int amountOfNavigationElements = 8;
@@ -20,30 +20,22 @@ public class NavigationSection {
     private WebDriverWait navigationWait;
     private int navigationTimeout = 5;
 
-    public NavigationSection(WebDriver driver) {
+    public NavigationSectionPage(WebDriver driver) {
         this.driver = driver;
         commonPageElements = new CommonPageElements(this.driver);
-        this.navigationWait = new WebDriverWait(this.driver, navigationTimeout);
+        this.navigationWait = new WebDriverWait(this.driver, this.navigationTimeout);
     }
 
     public boolean checkAmountOfNavigationElements() {
         boolean result = false;
+
+        topNavigationMenu = commonPageElements.getTopNavigationMenu();
 
         if (amountOfNavigationElements == getActualAmountOfNavigationElements()) {
             result = true;
         }
 
         return result;
-    }
-
-    public void waitForMenuElements(){
-
-        navigationWait.until(ExpectedConditions.visibilityOfAllElements(topNavigationMenu));
-    }
-
-    public void waitForPreloader(WebElement preloader){
-
-        navigationWait.until(ExpectedConditions.attributeContains(preloader, "style", "display: none;"));
     }
 
     public void waitForNextPage(String previousTitle, String previousURL){
@@ -97,7 +89,6 @@ public class NavigationSection {
     }
 
     private int getActualAmountOfNavigationElements() {
-        topNavigationMenu = commonPageElements.getTopNavigationMenu();
         int actual = topNavigationMenu
                 .size();
         return actual;
@@ -117,7 +108,6 @@ public class NavigationSection {
 
         return allPages;
     }
-
 
     private void waitForHomePage(){
         Page homePage = new HomePage(driver);

@@ -6,8 +6,10 @@ public class Page {
     private String pageUrl = "";
     private String title = "";
     private String hyperlinkName = "";
+    private WebDriver driver;
 
     protected Page(WebDriver driver){
+        this.driver = driver;
     }
 
 
@@ -34,4 +36,6 @@ public class Page {
     protected void setHyperlinkName(String hyperlinkName){
         this.hyperlinkName = hyperlinkName;
     }
+
+    protected WebDriver getDriver() { return driver; }
 }

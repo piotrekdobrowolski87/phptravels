@@ -1,6 +1,5 @@
 package pages;
 
-import common.CommonMethods;
 import common.MyFunction;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -16,7 +15,9 @@ import java.util.List;
 
 public class CommonPageElements {
 
-    WebDriver driver;
+    private WebDriver driver;
+    private WebDriverWait commonPageElementsWait;
+    private int timeout = 5;
 
     @FindBy(how = How.CLASS_NAME, using = "navbar-brand")
     private WebElement navigationBarImage;
@@ -49,6 +50,7 @@ public class CommonPageElements {
     public CommonPageElements(WebDriver driver){
         this.driver = driver;
         PageFactory.initElements(driver, this);
+        this.commonPageElementsWait = new WebDriverWait(this.driver,this.timeout);
     }
 
     public List<WebElement> getTopNavigationMenu() {
@@ -72,5 +74,15 @@ public class CommonPageElements {
         WebElement clicableElement = wait.until(myFunction);
 
         return clicableElement;
+    }
+
+    public void waitForMenuElements(){
+
+        commonPageElementsWait.until(ExpectedConditions.visibilityOfAllElements(topNavigationMenu));
+    }
+
+    public void waitForPreloader(){
+
+        commonPageElementsWait.until(ExpectedConditions.attributeContains(preloader, "style", "display: none;"));
     }
 }
