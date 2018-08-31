@@ -15,13 +15,11 @@ import org.testng.annotations.Test;
 import pages.CommonPageElements;
 import pages.allPages.HomePage;
 
-import java.time.Duration;
-
 
 public class Home {
 
     private WebDriver driver;
-    private String moveRightActivBackground = "rgba(0, 0, 0, 0.2)";
+
 
     @BeforeTest(alwaysRun = true)
     @Parameters({"browser", "width", "height", "pageAddress"})
@@ -39,29 +37,12 @@ public class Home {
 
         commonPageElements.waitForPreloader();
 
-        WebElement aaa = homePage.getMoveRight();
-        String bbb = aaa.getCssValue("background-color");
+        homePage.checkNavigationBarBackgroundLeft();
+        homePage.checkNavigationBarBackgroundRight();
 
-        System.out.println(bbb);
-
-        Actions bulider = new Actions(driver);
-
-        Action mousOverRight = bulider.moveToElement(aaa)
-                .build();
-
-        mousOverRight.perform();
+        homePage.checkPromoSectionBackground();
 
 
-        FluentWait wait = new WebDriverWait(driver,100)
-                .pollingEvery(Duration.ofSeconds(10));
-
-        wait.until(ExpectedConditions.attributeToBe(aaa, "background-color","rgba(0, 0, 0, 0.2)"));
-
-        String ccc = aaa.getCssValue("background-color");
-
-        System.out.println(ccc);
-
-        System.out.println();
 
     }
 

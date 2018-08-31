@@ -8,7 +8,7 @@
         <parameter name="height" value="700"/>
         <parameter name="pageAddress" value="https://www.phptravels.net/"/>
         <classes>
-            <class name="tests.usageTests.Navigation"></class>
+            <class name="tests.Home"></class>
         </classes>
     </test>
-</suite>
+    </suite>
