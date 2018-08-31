@@ -1,14 +1,16 @@
 package tests.usageTests;
 
-import common.Element;
+import common.CommonMethods;
 import common.SetBrowser;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.CommonPageElements;
 import pages.Page;
-import pages.allPages.HotelsPage;
 import pages.usageTests.NavigationSection;
 
 import java.util.List;
@@ -16,63 +18,82 @@ import java.util.List;
 public class Navigation {
 
     private WebDriver driver;
-    private String pageAddress;
     private CommonPageElements commonPageElements;
     private NavigationSection navigationSection;
+    private CommonMethods commonMethods;
+    private WebElement preloader;
+    private List<WebElement> topNavigationMenu;
+    private WebElement menuElement;
     private int invocationCount = 1;
-
+    private String previousTitle;
+    private String previousURL;
 
 
     @BeforeTest(alwaysRun = true)
-    @Parameters({"browser","width","height","pageAddress"})
-    public void setUpBrowser(String browser, int width, int height, String pageAddress){
+    @Parameters({"browser", "width", "height", "pageAddress"})
+    public void setUpBrowser(String browser, int width, int height, String pageAddress) {
         SetBrowser setBrowser = new SetBrowser();
         this.driver = setBrowser.setBrowser(browser, width, height, pageAddress);
-        this.pageAddress = pageAddress;
         this.commonPageElements = new CommonPageElements(driver);
         this.navigationSection = new NavigationSection(driver);
+        this.commonMethods = new CommonMethods(driver);
     }
 
     @Test
     public void checkAmountOfNavigationElements() {
         Assert.assertTrue(navigationSection.checkAmountOfNavigationElements(), "Top navigation menu has more/less elements than expected");
         System.out.println("Top navigation menu has expected number of elements");
+
+        preloader = commonPageElements.getPreloader();
+
+        navigationSection.waitForPreloader(preloader);
+
+        previousTitle = driver.getTitle();
+        previousURL = driver.getCurrentUrl();
+
+        topNavigationMenu = commonPageElements.getTopNavigationMenu();
     }
 
     @Test(invocationCount = 8)
-    public void checkNavigation(){
-        List<WebElement> topNavigationMenu = commonPageElements.getTopNavigationMenu();
+    public void checkNavigation() {
 
-        if(invocationCount == navigationSection.getAmountOfNavigationElements()) {
-            invocationCount = 0;
-        }
+        navigationSection.waitForMenuElements();
+        menuElement = topNavigationMenu.get(invocationCount);
 
-            WebElement menuElement = topNavigationMenu.get(invocationCount);
-            String menuElementName = menuElement.getText()
-                    .trim()
-                    .toLowerCase();
+        String hyperlinkName = commonMethods.getTextFromWebElement(menuElement);
+        menuElement.click();
 
-            menuElement.click();
+        navigationSection.waitForNextPage(previousTitle,previousURL);
+        navigationSection.waitForPreloader(preloader);
 
-            invocationCount++;
+        Page page = navigationSection.getPage(hyperlinkName);
 
-            NavigationSection navigationSection = new NavigationSection(driver);
-            Page page = navigationSection.getPage(menuElementName);
+        navigationSection.checkAddressAndTitle(page);
 
-            navigationSection.checkAddressAndTitle(page);
-    }
+        afterPageChange();
 
-    @AfterTest
-    public void backToMainPage(){
+        navigationSection.backToMainPage(commonPageElements
+                .waitNavigationBarImage());
 
-        if(invocationCount != 0) {
-            commonPageElements.backToMainPage();
-        }
     }
 
     @AfterSuite
-    public void end(){
+    public void end() {
         driver.quit();
+    }
+
+    private void afterPageChange(){
+
+        if(invocationCount < navigationSection.getAmountOfNavigationElements() - 1)
+        {
+            invocationCount++;
+        }
+        else {
+            invocationCount = 0;
+        }
+
+        previousTitle = driver.getTitle();
+        previousURL = driver.getCurrentUrl();
     }
 
 }

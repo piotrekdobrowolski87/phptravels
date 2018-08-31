@@ -2,6 +2,8 @@ package pages.usageTests;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import pages.CommonPageElements;
 import pages.Page;
@@ -15,10 +17,13 @@ public class NavigationSection {
     private CommonPageElements commonPageElements;
     private int amountOfNavigationElements = 8;
     private List<WebElement> topNavigationMenu;
+    private WebDriverWait navigationWait;
+    private int navigationTimeout = 5;
 
     public NavigationSection(WebDriver driver) {
         this.driver = driver;
         commonPageElements = new CommonPageElements(this.driver);
+        this.navigationWait = new WebDriverWait(this.driver, navigationTimeout);
     }
 
     public boolean checkAmountOfNavigationElements() {
@@ -29,6 +34,26 @@ public class NavigationSection {
         }
 
         return result;
+    }
+
+    public void waitForMenuElements(){
+
+        navigationWait.until(ExpectedConditions.visibilityOfAllElements(topNavigationMenu));
+    }
+
+    public void waitForPreloader(WebElement preloader){
+
+        navigationWait.until(ExpectedConditions.attributeContains(preloader, "style", "display: none;"));
+    }
+
+    public void waitForNextPage(String previousTitle, String previousURL){
+
+        navigationWait.until(ExpectedConditions.not(
+                ExpectedConditions.and(
+                        ExpectedConditions.titleIs(previousTitle),
+                        ExpectedConditions.urlContains(previousURL)
+                )
+        ));
     }
 
     public Page getPage(String hyperlinkName){
@@ -47,6 +72,37 @@ public class NavigationSection {
         return new HomePage(driver);
     }
 
+    public void checkAddressAndTitle(Page page){
+        String actualPageAddress = driver.getCurrentUrl();
+        Assert.assertEquals(actualPageAddress, page.getPageUrl(), "Page address is different than expected");
+        System.out.println(page.getPageUrl() + " page url ok");
+
+        String actualTitle = driver.getTitle();
+        Assert.assertEquals(actualTitle , page.getPageTitle(), "Page title is different than expected");
+        System.out.println(page.getPageTitle() + " page title ok");
+
+        System.out.println();
+    }
+
+    public void backToMainPage(WebElement navigationBarImage){
+
+        navigationBarImage.click();
+        waitForHomePage();
+
+        System.out.println("You back to main page");
+    }
+
+    public int getAmountOfNavigationElements(){
+        return amountOfNavigationElements;
+    }
+
+    private int getActualAmountOfNavigationElements() {
+        topNavigationMenu = commonPageElements.getTopNavigationMenu();
+        int actual = topNavigationMenu
+                .size();
+        return actual;
+    }
+
     private List<Page> allPages(){
         List<Page> allPages = new ArrayList<>(getActualAmountOfNavigationElements());
 
@@ -62,26 +118,16 @@ public class NavigationSection {
         return allPages;
     }
 
-    public void checkAddressAndTitle(Page page){
-        String actualPageAddress = driver.getCurrentUrl();
-        Assert.assertEquals(actualPageAddress, page.getPageUrl(), "Page address is different than expected");
-        System.out.println(page.getPageTitle() + " page url ok");
 
-        String actualTitle = driver.getTitle();
-        Assert.assertEquals(actualTitle , page.getPageTitle(), "Page title is different than expected");
-        System.out.println(page.getPageTitle() + " page title ok");
+    private void waitForHomePage(){
+        Page homePage = new HomePage(driver);
 
-        System.out.println();
-    }
+        System.out.println(homePage.getPageTitle());
+        System.out.println(homePage.getPageUrl());
 
-    public int getAmountOfNavigationElements(){
-        return amountOfNavigationElements;
-    }
-
-    private int getActualAmountOfNavigationElements() {
-        topNavigationMenu = commonPageElements.getTopNavigationMenu();
-        int actual = topNavigationMenu
-                .size();
-        return actual;
+        navigationWait.until(ExpectedConditions.and(
+                ExpectedConditions.titleIs(homePage.getPageTitle()),
+                ExpectedConditions.urlContains(homePage.getPageUrl())
+        ));
     }
 }

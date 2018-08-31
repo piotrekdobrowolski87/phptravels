@@ -4,14 +4,11 @@ import org.openqa.selenium.WebDriver;
 import pages.Page;
 
 public class CarsPage extends Page {
-    private String title = "Cars Listings";
-    private String pageUrl = "https://www.phptravels.net/cars";
-    private String hyperlinkName = "cars";
 
     public CarsPage(WebDriver driver){
         super(driver);
-        setTitle(this.title);
-        setPageUrl(this.pageUrl);
-        setHyperlinkName(this.hyperlinkName);
+        setTitle("Cars Listings");
+        setPageUrl("https://www.phptravels.net/cars");
+        setHyperlinkName("cars");
     }
 }

@@ -1,21 +1,24 @@
 package pages;
 
-import common.Element;
+import common.CommonMethods;
+import common.MyFunction;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
-import org.testng.Assert;
-import pages.allPages.HomePage;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 public class CommonPageElements {
 
     WebDriver driver;
-    Element element;
 
     @FindBy(how = How.CLASS_NAME, using = "navbar-brand")
-    @CacheLookup
     private WebElement navigationBarImage;
 
     //top navigation menu
@@ -38,22 +41,36 @@ public class CommonPageElements {
     @CacheLookup
     private WebElement language;
 
+    //preloader
+    @FindBy(how = How.ID, using = "preloader")
+    private WebElement preloader;
+
 
     public CommonPageElements(WebDriver driver){
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    public void backToMainPage(){
-        navigationBarImage.click();
-        Page homePage = new HomePage(driver);
-
-        Assert.assertEquals(driver.getCurrentUrl(),homePage.getPageUrl(),"It is not main page URL");
-
-        System.out.println("You back to main page");
-    }
-
     public List<WebElement> getTopNavigationMenu() {
         return topNavigationMenu;
+    }
+
+    public WebElement getPreloader() {
+        return preloader;
+    }
+
+    public WebElement waitNavigationBarImage(){
+
+        Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(15))
+                .pollingEvery(Duration.ofSeconds(1))
+                .ignoring(NoSuchElementException.class);
+
+        MyFunction myFunction = new MyFunction();
+        myFunction.setWebElement(navigationBarImage);
+
+        WebElement clicableElement = wait.until(myFunction);
+
+        return clicableElement;
     }
 }
