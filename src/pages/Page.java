@@ -2,7 +2,7 @@ package pages;
 
 import org.openqa.selenium.WebDriver;
 
-public class Page {
+public abstract class Page {
     private String pageUrl = "";
     private String title = "";
     private String hyperlinkName = "";
